@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 async function main() {
     const student = await prisma.student.upsert({
@@ -14,4 +13,16 @@ async function main() {
             feePaid: "true"
         },
     });
+
+    console.log({ student })
 }
+
+main()
+    .then(() => prisma.$disconnect())
+    .catch(async (error) => {
+        console.log(`Something went wrong: ${error}`);
+        await prisma.$disconnect();
+        process.exit();
+    })
+
+
