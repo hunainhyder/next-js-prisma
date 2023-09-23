@@ -4,9 +4,10 @@ const prisma = new PrismaClient();
 
 async function main() {
     const student = await prisma.student.upsert({
-        where: { age: "19" },
+        where: { id: "01" },
         update: {},
         create: {
+            id: "01",
             fullname: "Hunain",
             age: "19",
             course: "bscs",
