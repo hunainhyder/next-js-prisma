@@ -11,10 +11,10 @@ datasource db {
 }
 
 model Student {
-  id        String  @id @default(uuid())
+  id        String    @id @default(uuid())
   fullname  String
   age       String
-  course    String
+  course    String    @unique
   feePaid   String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
