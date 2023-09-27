@@ -1,16 +1,32 @@
-import { prisma } from '@/lib/prisma'
-import '@/app/page.module.css'
+import { Student } from "@prisma/client";
+import React, { cache, use } from "react";
 
-export default async function Home() {
-  const data = await prisma.student.findMany();
-  
+const getStudents = cache(() => 
+  fetch("http://localhost:3000/api/student").then((res) => res.json())
+)
+
+export default function Home() {
+  let students = use<Student[]>(getStudents());
+
   return (
-    <div>
-      <h1>Hello Next.js</h1>
-
-      <ul>
-        {data.map(curr => <li>{curr.fullname} ({curr.email})</li>)}
-      </ul>
-    </div>
+    <main style={{ maxWidth: 1200, marginInline: "auto", padding: 20 }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr 1fr",
+          gap: 20,
+        }}
+      >
+        {students.map((user) => (
+          <div
+            key={user.id}
+            style={{ border: "1px solid #ccc", textAlign: "center" }}
+          >
+            <h3>{user.fullname}</h3>
+            <p>{user.email}</p>
+          </div>
+        ))}
+      </div>
+    </main>
   )
 }
